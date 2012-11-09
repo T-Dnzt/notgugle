@@ -1,4 +1,3 @@
-
 mongo_url = ENV['MONGOLAB_URI'] || "mongodb://localhost:27017/notgugle-#{Rails.env}"
 uri = URI.parse(mongo_url)
 database = uri.path.gsub('/', '')
