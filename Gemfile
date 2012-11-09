@@ -16,6 +16,7 @@ gem 'jquery-rails'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
+gem 'nokogiri'
 
 
 # Gems used only for assets and not required
