@@ -18,7 +18,7 @@ module SearchingTools
 	  		end
 
 	  		def path_to_files
-	  			"/Volumes/Data/Thibault/Pro/Ingesup/M2/SEO/notgugle/html"
+          Rails.root.join('html')
 	  		end
 	  	end
 	  end
