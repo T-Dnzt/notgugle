@@ -1,0 +1,9 @@
+%header.navbar.navbar-fixed-top
+  .navbar-inner
+    .container
+      = link_to "notGugle", root_path, :class => 'brand'
+      %nav
+        %ul.nav.pull-right
+          %li= link_to "Home",    root_path
+          %li= link_to "Indexer",    indexer_path
+          %li= link_to "Help", help_path

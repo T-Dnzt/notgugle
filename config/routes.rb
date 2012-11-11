@@ -3,8 +3,8 @@ Nogugle::Application.routes.draw do
   # first created -> highest priority.
 
   root :to => 'search_engine#index'
-  match '/indexer' => "search_engine#indexer" 
-
+  match '/indexer' => "search_engine#indexer"
+  match '/help' => "search_engine#help"
   # Sample of regular route:
   #   match 'products/:id' => 'catalog#view'
   # Keep in mind you can assign values other than :controller and :action
