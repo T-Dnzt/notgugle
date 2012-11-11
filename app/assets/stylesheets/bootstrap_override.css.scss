@@ -1,0 +1,12 @@
+@import "bootstrap";
+body { padding-top: 60px; }
+.navbar-inner {
+  color: #faddde;
+  background: #d81b21;
+  background: -webkit-gradient(linear, left top, left bottom, from(#ed1c24), to(#aa1317));
+  background: -moz-linear-gradient(top,  #ed1c24,  #aa1317);
+  filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#ed1c24', endColorstr='#aa1317');
+}
+.navbar .nav > li > a { color: white; }
+.navbar .nav > li > a:hover { color: #808080; }
+@import "bootstrap-responsive";
