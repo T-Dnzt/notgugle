@@ -3,6 +3,7 @@ class Keyword
 
   belongs_to :page
 
+  key :word, String
   key :weight, Integer
   key :stats, Array
 end
