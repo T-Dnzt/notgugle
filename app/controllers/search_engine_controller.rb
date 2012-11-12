@@ -4,5 +4,6 @@ class SearchEngineController < ApplicationController
 
 	def indexer
 		SearchingTools::Indexer::Indexer.run
+		#SearchingTools::Searcher::Searcher.run("ruby")
 	end
 end

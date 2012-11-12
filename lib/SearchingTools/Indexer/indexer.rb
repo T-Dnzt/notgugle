@@ -2,7 +2,7 @@ module SearchingTools
   module Indexer
 	  class Indexer
 	  	class << self
-	  		def run(options = {})
+	  		def run
 	  			#open yml config with tag's weight
 	  			Rails.logger.info "Indexing..."
 	  			parser = Parser.new(path_to_files, tag_weights, excluded_words)
