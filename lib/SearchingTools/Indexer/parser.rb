@@ -17,7 +17,7 @@ module SearchingTools
 				if page = save_page
 					Rails.logger.info "Parsing file #{@file}"
 					@page = page
-					doc = Nokogiri::HTML(open(@file))
+					doc = Nokogiri::HTML(open(@file,"r"))
 					parse_page(doc)
 			  end
 			end
@@ -69,7 +69,7 @@ private
 
 	      Page.create(:filename => filename,
 	                  :file_hash => file_hash)
-	    end  
+	    end
 		end
 
 	 end
