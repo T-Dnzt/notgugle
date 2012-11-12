@@ -1,4 +1,3 @@
-#encoding: utf-8
 module SearchingTools
   module Indexer
 	  class Indexer
@@ -32,7 +31,7 @@ module SearchingTools
 	  		end
 
 	  		def excluded_words
-          %w{le la les je tu il elle nous vous elles ils leur leurs là mes ma mon mais ou est donc or ni car ni si un une des}
+          %w{le la les je tu il elle nous vous elles ils leur leurs la mes ma mon mais ou est donc or ni car ni si un une des}
         end
 
 	  	end
