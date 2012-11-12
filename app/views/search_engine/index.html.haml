@@ -1,7 +1,13 @@
 - provide(:title, 'Home')
 .center.hero-unit
-  %img{ :title => "notGugle", :src => "assets/logo.png", :border => "0", :alt => "logo" }
-    %h2
-      %form#searchbox{:action => ""}
-        %input#search{:placeholder => "Type here", :type => "text"}
-        %input#submit{:type => "submit", :value => "Search"}
+  - unless @results
+    %img{ :title => "notGugle", :src => "assets/logo.png", :border => "0", :alt => "logo" }
+  = form_tag(root_path, :id => "searchbox") do 
+    = text_field_tag "search", "", :placeholder => "Type here", :id => "search"
+    = submit_tag("Search", :id => "submit")
+  - if @results
+    %ul
+      = @results.each do |result|
+        %li
+    
+    

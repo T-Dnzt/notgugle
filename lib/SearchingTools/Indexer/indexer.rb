@@ -5,29 +5,36 @@ module SearchingTools
 	  		def run
 	  			#open yml config with tag's weight
 	  			Rails.logger.info "Indexing..."
-	  			parser = Parser.new(path_to_files, tag_weights, excluded_words)
-	  			parser.run
+          t1 = Time.now
+          Rails.logger.info "#{Rails.root.join('html')}/*.html"
+          Dir.glob("#{Rails.root.join('html')}/*.html") do |file|
+            Rails.logger.info "Parsing file: #{file}"
+            parser = Parser.new(file, tag_weights, excluded_words)
+            parser.run
+          end
+          r2 = Time.now
+          Rails.logger.debug r2 - t1
 	  		end
 
 	  		def tag_weights
 	  			tag_weights = {
-  	  				:p => 1,
-  	  				:h1 => 3,
-  	  				:h2 => 1.5,
-  	  				:h3 => 1.4,
-  		        :h4 => 1.3,
-  		        :h5 => 1.2,
-  		        :h6 => 1.1,
-  		        :strong => 2,
-  		        :img => 1.1, # to change : img.alt
-  		        :a => 1.1, # to change : a.title
-  		        :header => 2, # to change : header.keyword, header.description, header.title
-  		        :link => 4
+  	  				"p" => 1,
+  	  				"h1" => 3,
+  	  				"h2" => 1.5,
+  	  				"h3" => 1.4,
+  		        "h4" => 1.3,
+  		        "h5" => 1.2,
+  		        "h6" => 1.1,
+  		        "strong" => 2,
+  		        "img" => 1.1, # to change : img.alt
+  		        "a" => 1.1, # to change : a.title
+  		        "header" => 2, # to change : header.keyword, header.description, header.title
+  		        "link" => 4
 	  			}
 	  		end
 
 	  		def path_to_files
-          		[Rails.root.join('html')]
+          		
 	  		end
 
 	  		def excluded_words

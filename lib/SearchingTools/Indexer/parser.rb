@@ -1,101 +1,72 @@
 module SearchingTools
   module Indexer
-	class Parser
+	  class Parser
 
-	  	def initialize(path, tags_weight, excluded_words)
-	  		@path = path
+	  	def initialize(file, tags_weight, excluded_words)
+	  		@file = file
+	  		@page = nil
 	  		@tags_weight = tags_weight
 	  		@excluded_words = excluded_words
+    		@word_collection = Mongo::Connection.new.db('notgugle-development').collection("keywords")
+    		@page_collection = Mongo::Connection.new.db('notgugle-development').collection("pages")
 	  	end
 
 	  	#Create a new page in db and start to parse if the page has been modified
 	  	def run
-	  	  @path.each do |dir|
-			Dir.glob("#{dir}/*.html") do |file|
-			  if page = save_page(file)
-			  	Rails.logger.debug "Parsing #{file}..."
-				doc = Nokogiri::HTML(open(file))
-				parse_page(page, doc)
+				if page = save_page
+					@page = page
+					doc = Nokogiri::HTML(open(@file))
+					parse_page(doc)
 			  end
 			end
-		  end
-		end
 
 private
 
 		#Parse each html file in the specified directory
-		def parse_page(page, doc)
+		def parse_page(doc)
 		  @tags_weight.each do |tag, weight|
-			doc.xpath("//#{tag}").each do |node|
-		  	  parse_node(node).each do |word|
-		  		save_word(page.id, word, tag.to_s) unless @excluded_words.include?(word.downcase)
-		  	  end
+			  doc.xpath("//#{tag}").each do |node|
+		  	  parse_node(node, tag)
 		    end
 		  end
 		end
 
 		#Parse each tag to retrieve the word. Split everything which is not a letter or a space.
-		def parse_node(node)
-		  words = node.text.split(' ').each {|w| w.gsub!(/[^[:alpha:]]/, "")}
+		def parse_node(node, tag)
+		  node.text.gsub(/[^[:alpha:]]/, " ").downcase.split.each do |word|
+		  	if !word.blank? && !@excluded_words.include?(word)
+		  		save_word(word, tag)
+        end
+		  end
 		end
 
-		#Calculate the weight of the current word based on the stats attribute
-		def calc_weight(stats)
-		  weight = stats.inject(0) {|sum, stat| sum + (@tags_weight[stat.tag.to_sym].to_f * stat.frequency.to_f) }
+		def save_word(word, tag)
+			if keyword = Keyword.find_by_word_and_page_id(word, @page.id)
+				keyword["weight"] += @tags_weight[tag].to_f
+				keyword.save
+			else
+				@word_collection.insert({'page_id' => @page.id, 'word' => word, 'weight' => 0})
+			end	
 		end
 
 		#Save or update a page in db. Check the md5 to see if anything changed
-		def save_page(file)
-		  filename = File.basename(file)
-		  file_hash = Digest::MD5.hexdigest(File.read(file))
-
-		  if page = Page.find_by_filename(filename)
-			if file_hash == page.file_hash
-			  nil
-			else
-			  page.update_attribute(:file_hash, file_hash)
-			  page
-			end
-		  else
-			  Page.create(:filename => filename,
-						  :file_hash => file_hash)
-		  end
+		def save_page
+			filename = File.basename(@file)
+    	file_hash = Digest::MD5.hexdigest(File.read(@file))
+	    if page = Page.find_by_filename(filename)
+	      if file_hash == page.file_hash
+	      	@page = nil
+	      	nil
+	      else
+	      	page.update_attribute(:file_hash, file_hash)
+	      	page
+	      end
+	    else
+	      Page.create(:filename => filename,
+	                  :file_hash => file_hash)
+	    end  
 		end
 
-		#Save or update a word in db.
-		def save_word(page_id, word, tag)
-		  page = Page.find(page_id)
-		  page_keywords = page.keywords.collect { |k| k.word }
-
-		  if page_keywords.include?(word.downcase)
-			keyword = Keyword.find_by_page_id_and_word(page.id, word.downcase)
-			update_keyword_stats(keyword, tag)
-		  else
-		  	stats = [Stat.new(:tag => tag, :frequency => 1)]
-			Keyword.create(:page => page,
-						   :word => word.downcase,
-						   :weight => calc_weight(stats),
-						   :stats => stats)
-		  end
-	  	end
-
-	  	#Update the stats of the keyword parameter.
-	  	def update_keyword_stats(keyword, tag)
-	  		stats = keyword.stats
-
-			if current_stat = keyword.get_current_stat(tag)
-				Rails.logger.debug "fooudois"
-				stats.delete(current_stat)
-				current_stat.frequency += 1
-				stats << current_stat
-				keyword.update_attributes(:stats => stats,
-										  :weight => calc_weight(stats))
-			else
-				stats << Stat.new(:tag => tag, :frequency => 1)
-				keyword.update_attributes(:stats => stats,
-										  :weight => calc_weight(stats))
-			end
-		end
-	end
+	 end
   end
 end

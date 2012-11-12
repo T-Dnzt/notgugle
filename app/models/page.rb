@@ -6,4 +6,7 @@ class Page
   key :filename, String
   key :file_hash, String
   timestamps!
+
+  self.ensure_index(:_id)
+
 end

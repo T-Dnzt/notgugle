@@ -2,24 +2,12 @@ class Keyword
   include MongoMapper::Document
 
   belongs_to :page
-  many :stats
 
   key :word, String
-  key :weight, Integer
+  key :weight, Float
+  key :stats, Array
   timestamps!
 
-
-  def get_current_stat(tag)
-    self.stats.each {|stat| return stat if stat.tag == tag }
-    nil
-  end
-
-end
-
-class Stat
-  include MongoMapper::EmbeddedDocument
-
-  key :tag, String
-  key :frequency, Integer 
+  self.ensure_index(:word)
 
 end
