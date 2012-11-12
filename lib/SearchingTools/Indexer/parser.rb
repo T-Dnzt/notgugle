@@ -42,7 +42,6 @@ private
 
 		def save_word(word, tag)
       if keyword = Keyword.find(word: word, page_id: @page_id)
-			#if keyword = Keyword.find_by_word_and_page_id(word, @page.id)
 				keyword["weight"] += @tags_weight[tag].to_f
 				keyword.save
 			else
