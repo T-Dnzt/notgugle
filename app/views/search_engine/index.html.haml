@@ -6,8 +6,8 @@
     = text_field_tag "search", "", :placeholder => "Type here", :id => "search"
     = submit_tag("Search", :id => "submit")
   - if @results
+    = @results.count
     %ul
-      = @results.each do |result|
-        %li
-    
+      - @results.each do |result|
+        %li=result.filename
     

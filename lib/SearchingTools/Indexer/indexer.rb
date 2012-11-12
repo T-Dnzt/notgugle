@@ -6,9 +6,7 @@ module SearchingTools
 	  			#open yml config with tag's weight
 	  			Rails.logger.info "Indexing..."
           t1 = Time.now
-          Rails.logger.info "#{Rails.root.join('html')}/*.html"
           Dir.glob("#{Rails.root.join('html')}/*.html") do |file|
-            Rails.logger.info "Parsing file: #{file}"
             parser = Parser.new(file, tag_weights, excluded_words)
             parser.run
           end

@@ -7,13 +7,15 @@ module SearchingTools
 	  		@page = nil
 	  		@tags_weight = tags_weight
 	  		@excluded_words = excluded_words
-    		@word_collection = Mongo::Connection.new.db('notgugle-development').collection("keywords")
-    		@page_collection = Mongo::Connection.new.db('notgugle-development').collection("pages")
+	  		connection = Mongo::Connection.new.db('notgugle-development')
+    		@word_collection = connection.collection("keywords")
+    		@page_collection = connection.collection("pages")
 	  	end
 
 	  	#Create a new page in db and start to parse if the page has been modified
 	  	def run
 				if page = save_page
+					Rails.logger.info "Parsing file #{@file}"
 					@page = page
 					doc = Nokogiri::HTML(open(@file))
 					parse_page(doc)
@@ -41,9 +43,9 @@ private
 		end
 
 		def save_word(word, tag)
-			if keyword = Keyword.find_by_word_and_page_id(word, @page.id)
-				keyword["weight"] += @tags_weight[tag].to_f
-				keyword.save
+			if keyword = @word_collection.find(word: word, page_id: @page.id).to_a.first
+				weight = keyword['weight'] + @tags_weight[tag].to_f
+				@word_collection.update({ word: word, page_id: @page.id }, {'weight' => weight })
 			else
 				@word_collection.insert({'page_id' => @page.id, 'word' => word, 'weight' => @tags_weight[tag].to_f})
 			end	
@@ -53,8 +55,9 @@ private
 		def save_page
 			filename = File.basename(@file)
     	file_hash = Digest::MD5.hexdigest(File.read(@file))
-	    if page = Page.find_by_filename(filename)
-	      if file_hash == page.file_hash
+	    if page = @page_collection.find(filename: filename).to_a.first
+	    	Rails.logger.info "File existing"
+	      if file_hash == page["file_hash"]
 	      	@page = nil
 	      	nil
 	      else
@@ -62,6 +65,8 @@ private
 	      	page
 	      end
 	    else
+	      Rails.logger.info "New file"
+
 	      Page.create(:filename => filename,
 	                  :file_hash => file_hash)
 	    end  
