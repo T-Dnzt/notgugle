@@ -15,6 +15,7 @@ module SearchingTools
   			end
   			Rails.logger.debug "Results :"
   			result_pages.each {|r| Rails.logger.debug "#{r.filename}"}
+  			result_pages
   		end
 
 
