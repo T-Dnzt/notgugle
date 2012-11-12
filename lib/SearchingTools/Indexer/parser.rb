@@ -45,7 +45,7 @@ private
 				keyword["weight"] += @tags_weight[tag].to_f
 				keyword.save
 			else
-				@word_collection.insert({'page_id' => @page.id, 'word' => word, 'weight' => 0})
+				@word_collection.insert({'page_id' => @page.id, 'word' => word, 'weight' => @tags_weight[tag].to_f})
 			end	
 		end
 
