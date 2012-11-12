@@ -12,9 +12,17 @@ module SearchingTools
 	  		def tag_weights
 	  			tag_weights = {
 	  				:p => 1,
-	  				:h1 => 6,
-	  				:h2 => 5,
-	  				:h3 => 4
+	  				:h1 => 3,
+	  				:h2 => 1.5,
+	  				:h3 => 1.4,
+            :h4 => 1.3,
+            :h5 => 1.2,
+            :h6 => 1.1,
+            :strong => 2,
+            :img => 1.1, # to change : img.alt
+            :a => 1.1, # to change : a.title
+            :header => 2, # to change : header.keyword, header.description, header.title
+            :link => 4
 	  			}
 	  		end
 
