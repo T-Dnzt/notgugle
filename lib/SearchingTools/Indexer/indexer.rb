@@ -5,7 +5,8 @@ module SearchingTools
 	  		def run(options = {})
 	  			#open yml config with tag's weight
 	  			Rails.logger.info "Indexing..."
-	  			Parser.run(path_to_files, tag_weights)
+	  			parser = Parser.new(path_to_files, tag_weights, excluded_words)
+	  			parser.run
 	  		end
 
 	  		def tag_weights
@@ -18,8 +19,13 @@ module SearchingTools
 	  		end
 
 	  		def path_to_files
-          Rails.root.join('html')
+          		[Rails.root.join('html')]
 	  		end
+
+	  		def excluded_words
+	  			%w{le la les je tu il elle nous vous elles ils}
+	  		end
+
 	  	end
 	  end
   end
