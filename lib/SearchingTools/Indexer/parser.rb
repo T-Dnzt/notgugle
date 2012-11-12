@@ -15,7 +15,7 @@ module SearchingTools
 	  	def run
 				if page = save_page
 					@page = page
-					doc = Nokogiri::HTML(open(@file))
+					doc = Nokogiri::HTML(open(@file,"r"))
 					parse_page(doc)
 			  end
 			end
@@ -41,19 +41,20 @@ private
 		end
 
 		def save_word(word, tag)
-			if keyword = Keyword.find_by_word_and_page_id(word, @page.id)
+      if keyword = Keyword.find(word: word, page_id: @page_id)
+			#if keyword = Keyword.find_by_word_and_page_id(word, @page.id)
 				keyword["weight"] += @tags_weight[tag].to_f
 				keyword.save
 			else
 				@word_collection.insert({'page_id' => @page.id, 'word' => word, 'weight' => 0})
-			end	
+			end
 		end
 
 		#Save or update a page in db. Check the md5 to see if anything changed
 		def save_page
 			filename = File.basename(@file)
     	file_hash = Digest::MD5.hexdigest(File.read(@file))
-	    if page = Page.find_by_filename(filename)
+	    if page = Page.find(filename: filename)
 	      if file_hash == page.file_hash
 	      	@page = nil
 	      	nil
@@ -64,7 +65,7 @@ private
 	    else
 	      Page.create(:filename => filename,
 	                  :file_hash => file_hash)
-	    end  
+	    end
 		end
 
 	 end
