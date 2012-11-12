@@ -13,6 +13,7 @@ module SearchingTools
 	  	  @path.each do |dir|
 			Dir.glob("#{dir}/*.html") do |file|					
 			  if page = save_page(file)
+			  	Rails.logger.debug "Parsing #{file}..."
 				doc = Nokogiri::HTML(open(file))	
 				parse_page(page, doc)
 			  end

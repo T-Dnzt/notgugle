@@ -4,14 +4,17 @@ module SearchingTools
   	  class << self
   		def run(searched_str)
   			Rails.logger.info "Searching..."
-  			searched_arr = searched_str.gsub!(Regexp.new(excluded_words)).split(' ')
+  			searched_arr = searched_str.split(' ').each {|w| w.gsub!(/(\W|\d)/, "")}
 
+  			result_pages = []
   			searched_arr.each do |word|
-  			  matches = Keyword.find_all_by_word(word)
-  			  matches.each do |match|
-  			  	
-  			  end
+  			  matches = Keyword.find_all_by_word(Regexp.new(word))
+
+  			  matches.sort! { |a,b| b.weight <=> a.weight }
+  			  matches.each {|match| result_pages << match.page }
   			end
+  			Rails.logger.debug "Results :"
+  			result_pages.each {|r| Rails.logger.debug "#{r.filename}"}
   		end
 
 
