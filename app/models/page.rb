@@ -5,4 +5,5 @@ class Page
 
   key :filename, String
   key :file_hash, String
+  timestamps!
 end

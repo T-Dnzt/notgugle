@@ -41,7 +41,7 @@ private
 
 		#Calculate the weight of the current word based on the stats attribute
 		def calc_weight(stats)
-		  weight = stats.inject(0) {|sum, hash| sum + (@tags_weight[hash[:tag].to_sym].to_f * hash[:frequency].to_f) }
+		  weight = stats.inject(0) {|sum, stat| sum + (@tags_weight[stat.tag.to_sym].to_f * stat.frequency.to_f) }
 		end
 
 		#Save or update a page in db. Check the md5 to see if anything changed
@@ -71,7 +71,7 @@ private
 			keyword = Keyword.find_by_page_id_and_word(page.id, word.downcase)
 			update_keyword_stats(keyword, tag)		
 		  else
-		  	stats = [{:tag => tag, :frequency => 1}]
+		  	stats = [Stat.new(:tag => tag, :frequency => 1)]
 			Keyword.create(:page => page,
 						   :word => word.downcase,
 						   :weight => calc_weight(stats),
@@ -81,16 +81,17 @@ private
 
 	  	#Update the stats of the keyword parameter.
 	  	def update_keyword_stats(keyword, tag)
-			stats = keyword.stats.each { |hash| hash.to_options! }
+	  		stats = keyword.stats
 
-			if current_stat = stats.find { |hash| hash[:tag] == tag}
+			if current_stat = keyword.get_current_stat(tag)
+				Rails.logger.debug "fooudois"
 				stats.delete(current_stat)
-				current_stat[:frequency] += 1
+				current_stat.frequency += 1
 				stats << current_stat
 				keyword.update_attributes(:stats => stats,
 										  :weight => calc_weight(stats))
 			else
-				stats << {:tag => tag, :frequency => 1}
+				stats << Stat.new(:tag => tag, :frequency => 1)
 				keyword.update_attributes(:stats => stats,
 										  :weight => calc_weight(stats))
 			end
