@@ -15,14 +15,14 @@ module SearchingTools
   	  				:h1 => 3,
   	  				:h2 => 1.5,
   	  				:h3 => 1.4,
-  		            :h4 => 1.3,
-  		            :h5 => 1.2,
-  		            :h6 => 1.1,
-  		            :strong => 2,
-  		            :img => 1.1, # to change : img.alt
-  		            :a => 1.1, # to change : a.title
-  		            :header => 2, # to change : header.keyword, header.description, header.title
-  		            :link => 4
+  		        :h4 => 1.3,
+  		        :h5 => 1.2,
+  		        :h6 => 1.1,
+  		        :strong => 2,
+  		        :img => 1.1, # to change : img.alt
+  		        :a => 1.1, # to change : a.title
+  		        :header => 2, # to change : header.keyword, header.description, header.title
+  		        :link => 4
 	  			}
 	  		end
 
@@ -31,7 +31,7 @@ module SearchingTools
 	  		end
 
 	  		def excluded_words
-          %w{le la les je tu il elle nous vous elles ils leur leurs là mes ma mon mais ou est donc or ni car ni si un une des}
+          %w{le la les je tu il elle nous vous elles ils leur leurs la mes ma mon mais ou est donc or ni car ni si un une des}
         end
 
 	  	end

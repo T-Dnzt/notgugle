@@ -4,7 +4,7 @@ module SearchingTools
   	  class << self
   		def run(searched_str)
   			Rails.logger.info "Searching..."
-  			searched_arr = searched_str.split(' ').each {|w| w.gsub!(/(\W|\d)/, "")}
+  			searched_arr = searched_str.split(' ').each {|w| w.gsub!(/[^[:alpha:]]/, "")}
 
   			result_pages = []
   			searched_arr.each do |word|

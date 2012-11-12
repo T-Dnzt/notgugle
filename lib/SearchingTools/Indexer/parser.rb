@@ -11,10 +11,10 @@ module SearchingTools
 	  	#Create a new page in db and start to parse if the page has been modified
 	  	def run
 	  	  @path.each do |dir|
-			Dir.glob("#{dir}/*.html") do |file|					
+			Dir.glob("#{dir}/*.html") do |file|
 			  if page = save_page(file)
 			  	Rails.logger.debug "Parsing #{file}..."
-				doc = Nokogiri::HTML(open(file))	
+				doc = Nokogiri::HTML(open(file))
 				parse_page(page, doc)
 			  end
 			end
@@ -36,7 +36,7 @@ private
 
 		#Parse each tag to retrieve the word. Split everything which is not a letter or a space.
 		def parse_node(node)
-		  words = node.text.split(' ').each {|w| w.gsub!(/(\W|\d)/, "")}
+		  words = node.text.split(' ').each {|w| w.gsub!(/[^[:alpha:]]/, "")}
 		end
 
 		#Calculate the weight of the current word based on the stats attribute
@@ -48,7 +48,7 @@ private
 		def save_page(file)
 		  filename = File.basename(file)
 		  file_hash = Digest::MD5.hexdigest(File.read(file))
-			
+
 		  if page = Page.find_by_filename(filename)
 			if file_hash == page.file_hash
 			  nil
@@ -62,14 +62,14 @@ private
 		  end
 		end
 
-		#Save or update a word in db. 
+		#Save or update a word in db.
 		def save_word(page_id, word, tag)
 		  page = Page.find(page_id)
 		  page_keywords = page.keywords.collect { |k| k.word }
 
 		  if page_keywords.include?(word.downcase)
 			keyword = Keyword.find_by_page_id_and_word(page.id, word.downcase)
-			update_keyword_stats(keyword, tag)		
+			update_keyword_stats(keyword, tag)
 		  else
 		  	stats = [Stat.new(:tag => tag, :frequency => 1)]
 			Keyword.create(:page => page,
@@ -77,7 +77,7 @@ private
 						   :weight => calc_weight(stats),
 						   :stats => stats)
 		  end
-	  	end 
+	  	end
 
 	  	#Update the stats of the keyword parameter.
 	  	def update_keyword_stats(keyword, tag)
@@ -95,7 +95,7 @@ private
 				keyword.update_attributes(:stats => stats,
 										  :weight => calc_weight(stats))
 			end
-		end	
+		end
 	end
   end
 end
