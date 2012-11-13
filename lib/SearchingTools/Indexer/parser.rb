@@ -23,7 +23,7 @@ module SearchingTools
 			  save_words
 			end
 
-			def dispay_variables
+			def display_variables
 				Rails.logger.debug "Number of word parsed : #{@word_weight.size}"
 			end
 
@@ -45,7 +45,6 @@ private
 
 		#Parse each tag to retrieve the word. Split everything which is not a letter or a space.
 		def parse_node(node_text, weight)
-			Rails.logger.info "Parsing #{node_text}"
 		  node_text.gsub(/[^[:alpha:]]/, " ").downcase.split.each do |word|		  	
 		  	if word.length > 1 && !@excluded_words.include?(word)
           @word_weight[word] += weight

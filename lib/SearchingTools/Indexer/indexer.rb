@@ -9,9 +9,10 @@ module SearchingTools
           Dir.glob("#{path_to_files}/*.html") do |file|
             parser = Parser.new(file, tag_weights, tag_weights_special, excluded_words)
             parser.run
+            parser.display_variables
           end
-          r2 = Time.now
-          Rails.logger.debug r2 - t1
+          t2 = Time.now
+          Rails.logger.debug "Timer : #{t2 - t1}s"
 	  		end
 
 	  		def tag_weights
