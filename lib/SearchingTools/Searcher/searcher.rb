@@ -7,9 +7,11 @@ module SearchingTools
   			searched_arr = searched_str.split(' ').each {|w| w.gsub!(/[^[:alpha:]]/, "")}
 
   			result_pages = Hash.new(0)
+        description_pages = Array.new
 
         db = Mongo::Connection.new.db('notgugle-development')
         words_collection = db.collection("keywords")
+
   			searched_arr.each do |word|
   			  matches = words_collection.find({'word' => /#{word}/i}).to_a
 
@@ -19,7 +21,9 @@ module SearchingTools
   			end
 
         result_pages.sort! {|a, b| b["weight"] <=> a["weight"] }
-  			result_pages
+        result_pages.each { |f| description_pages << get_description("#{f['filename']}") }
+
+  			return result_pages, description_pages
   		end
 
       def sum_weight(array)
@@ -45,8 +49,14 @@ module SearchingTools
   			%w{le la les}
       end
 
-
+      def get_description(web_page)
+        meta_content = nil
+        doc = Nokogiri::HTML(open("#{Rails.root.join('public')}/html/#{web_page}","r"))
+        doc.xpath("//meta[@name='description']").each { |node| meta_content = node.attr('content') }
+        meta_content
   	  end
+
+    end
   	end
   end
 end
