@@ -7,8 +7,11 @@ module SearchingTools
   			searched_arr = searched_str.split(' ').each {|w| w.gsub!(/[^[:alpha:]]/, "")}
 
   			result_pages = []
+
+        db = Mongo::Connection.new.db('notgugle-development')
+        words_collection = db.collection("keywords")
   			searched_arr.each do |word|
-  			  matches = Keyword.find_all_by_word(Regexp.new(word))
+  			  matches = words_collection.find({"word" : "/#{word}/i"}).to_a.sort()
 
   			  matches.sort! { |a,b| b.weight <=> a.weight }
   			  matches.each {|match| result_pages << match.page }

@@ -15,6 +15,4 @@ class Page
   key :weight, Float
   key :frequency, Integer
 
-  self.ensure_index([:filename, 1], [:weight, -1])
-
 end
