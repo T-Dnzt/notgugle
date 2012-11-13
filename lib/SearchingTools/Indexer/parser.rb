@@ -4,22 +4,20 @@ module SearchingTools
 
 	  	def initialize(file, tags_weight, excluded_words)
 	  		@file = file
-	  		@page = nil
 	  		@tags_weight = tags_weight
 	  		@excluded_words = excluded_words
-	  		connection = Mongo::Connection.new.db('notgugle-development')
-    		@word_collection = connection.collection("keywords")
-    		@page_collection = connection.collection("pages")
+    		@word_weight = Hash.new(0)
+    		@word_frequency = Hash.new(0)
+    		@db = Mongo::Connection.new.db('notgugle-development')
 	  	end
 
 	  	#Create a new page in db and start to parse if the page has been modified
 	  	def run
-				if page = save_page
-					Rails.logger.info "Parsing file #{@file}"
-					@page = page
+				if save_page
 					doc = Nokogiri::HTML(open(@file,"r"))
 					parse_page(doc)
 			  end
+			  save_words
 			end
 
 private
@@ -28,47 +26,43 @@ private
 		def parse_page(doc)
 		  @tags_weight.each do |tag, weight|
 			  doc.xpath("//#{tag}").each do |node|
-		  	  parse_node(node, tag)
+		  	  parse_node(node, weight)
 		    end
 		  end
 		end
 
 		#Parse each tag to retrieve the word. Split everything which is not a letter or a space.
-		def parse_node(node, tag)
-		  node.text.gsub(/[^[:alpha:]]/, " ").downcase.split.each do |word|
-		  	if !word.blank? && !@excluded_words.include?(word)
-		  		save_word(word, tag)
+		def parse_node(node, weight)
+		  node.text.gsub(/[^[:alpha:]]/, " ").downcase.split.each do |word|		  	
+		  	if word.length > 1 && !@excluded_words.include?(word)
+          @word_weight[word] += weight
+          @word_frequency[word] += 1
         end
 		  end
 		end
 
-		def save_word(word, tag)
-			if keyword = @word_collection.find(word: word, page_id: @page.id).to_a.first
-				weight = keyword['weight'] + @tags_weight[tag].to_f
-				@word_collection.update({ word: word, page_id: @page.id }, {'weight' => weight })
-			else
-				@word_collection.insert({'page_id' => @page.id, 'word' => word, 'weight' => @tags_weight[tag].to_f})
-			end	
+		def save_words
+			 word_collection = @db.collection("keywords")
+		   @word_weight.each do |k, v|
+		     word_collection.update({ 'word' => "#{k}" }, {'$addToSet' => { 'pages' => { 'filename' => File.basename(@file), 'weight' => v, 'frequency' => @word_frequency[k] }}}, :upsert => true)
+		   end
 		end
 
 		#Save or update a page in db. Check the md5 to see if anything changed
 		def save_page
 			filename = File.basename(@file)
+			pages_collection = @db.collection("pages")
     	file_hash = Digest::MD5.hexdigest(File.read(@file))
-	    if page = @page_collection.find(filename: filename).to_a.first
-	    	Rails.logger.info "File existing"
-	      if file_hash == page["file_hash"]
-	      	@page = nil
+	    if file = HtmlFile.find(filename: filename)
+	      if file_hash == file.file_hash
 	      	nil
 	      else
-	      	page.update_attribute(:file_hash, file_hash)
-	      	page
+	      	pages_collection.update({'filename' => "#{filename}" }, { 'file_hash' => file_hash})
+	      	true
 	      end
 	    else
-	      Rails.logger.info "New file"
-
-	      Page.create(:filename => filename,
-	                  :file_hash => file_hash)
+	    	pages_collection.insert({ 'name' => filename, 'file_hash' => file_hash })
+	    	true
 	    end
 		end
 
