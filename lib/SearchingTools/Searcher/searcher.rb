@@ -11,13 +11,20 @@ module SearchingTools
         db = Mongo::Connection.new.db('notgugle-development')
         words_collection = db.collection("keywords")
   			searched_arr.each do |word|
-  			  matches = words_collection.find({"word" : "/#{word}/i"}).to_a.sort()
+          Rails.logger.info "Looking for #{word}"
+  			  matches = words_collection.find({'word' => /#{word}/i}).to_a
+          Rails.logger.info "Matches : #{matches.inspect}"
+          matches.each do |match|
+            
+            pages = match["pages"].sort! { |a,b| b["weight"] <=> a["weight"] }
 
-  			  matches.sort! { |a,b| b.weight <=> a.weight }
-  			  matches.each {|match| result_pages << match.page }
+            pages.each {|page| result_pages << page }
+          end
   			end
+
+
   			Rails.logger.debug "Results :"
-  			result_pages.each {|r| Rails.logger.debug "#{r.filename}"}
+  			result_pages.each {|r| Rails.logger.debug "#{r}"}
   			result_pages
   		end
 
