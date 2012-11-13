@@ -57,11 +57,11 @@ private
 	      if file_hash == file.file_hash
 	      	nil
 	      else
-	      	pages_collection.update({'filename' => "#{filename}" }, { 'file_hash' => file_hash})
+	      	pages_collection.update({'filename' => filename }, { 'file_hash' => file_hash})
 	      	true
 	      end
 	    else
-	    	pages_collection.insert({ 'name' => filename, 'file_hash' => file_hash })
+	    	pages_collection.insert({ 'filename' => filename, 'file_hash' => file_hash })
 	    	true
 	    end
 		end
