@@ -45,7 +45,7 @@ private
 
 		#Parse each tag to retrieve the word. Split everything which is not a letter or a space.
 		def parse_node(node_text, weight)
-		  node_text.gsub(/[^[:alpha:]]/, " ").downcase.split.each do |word|		  	
+		  node_text.gsub(/[^[:alpha:]]/, " ").downcase.split.each do |word|
 		  	if word.length > 1 && !@excluded_words.include?(word)
 	          @word_weight[word] += weight
 	          @word_frequency[word] += 1
@@ -67,7 +67,7 @@ private
 			 @word_weight.each do |word, weight|
 				 	e_wordz = word_collection.find_one({ 'word' => word })
 				  if @file_changed && e_word = word_collection.find_one({ 'word' => word })
-				  	e_word["pages"].delete_if { |h| h["filename"] == File.basename(@file) } 
+				  	e_word["pages"].delete_if { |h| h["filename"] == File.basename(@file) }
 					  word_collection.save(e_word)
 					end
 				end

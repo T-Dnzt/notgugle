@@ -37,10 +37,10 @@ module SearchingTools
               "img[@alt]" => ['alt', 1.2],
               "a[@title]" => ['title', 1.1]
           }
-        end 
+        end
 
 	  		def path_to_files
-          Rails.root.join('html')
+          Rails.root.join('public/html')
 	  		end
 
 	  		def excluded_words

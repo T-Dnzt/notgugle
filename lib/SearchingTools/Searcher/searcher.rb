@@ -7,7 +7,7 @@ module SearchingTools
   			searched_arr = searched_str.split(' ').each {|w| w.gsub!(/[^[:alpha:]]/, "")}
 
   			result_pages = Hash.new(0)
-        description_pages = Array.new
+        desc_pages = Hash.new(0)
 
         db = Mongo::Connection.new.db('notgugle-development')
         words_collection = db.collection("keywords")
@@ -21,9 +21,13 @@ module SearchingTools
   			end
 
         result_pages.sort! {|a, b| b["weight"] <=> a["weight"] }
-        result_pages.each { |f| description_pages << get_description("#{f['filename']}") }
+        result_pages.each do |f|
+          unless get_description("#{f['filename']}").nil?
+            desc_pages[f['filename']] = get_description("#{f['filename']}")
+          end
+        end
 
-  			return result_pages, description_pages
+  			return result_pages, desc_pages
   		end
 
       def sum_weight(array)

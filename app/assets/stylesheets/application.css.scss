@@ -198,3 +198,13 @@ p {
   font-size: 1.1em;
   line-height: 1.7em;
 }
+
+// remove later ul li crap
+ul li {
+  color: red;
+  list-style-type: none;
+}
+
+ul li p {
+  color: grey;
+}
