@@ -2,12 +2,18 @@
 .center.hero-unit
   - unless @results
     %img{ :title => "notGugle", :src => "assets/logo.png", :border => "0", :alt => "logo" }
-  = form_tag(root_path, :id => "searchbox") do 
+  = form_tag(root_path, :id => "searchbox") do
     = text_field_tag "search", "", :placeholder => "Type here", :id => "search"
     = submit_tag("Search", :id => "submit")
   - if @results
-    = @results.count
+    %p Around #{@results.count} results
     %ul
       - @results.each do |result|
-        %li=result
-    
+        %li
+          %ul
+            %li
+              = link_to result['filename'], "html/#{result['filename']}"
+              \- poids #{(result['weight'] - 0.0005).round(1)}
+            %li
+              %p
+                = @desc_pages.has_key?(result['filename']) ? @desc_pages[result['filename']] : "no description"
