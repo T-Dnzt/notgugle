@@ -3,6 +3,7 @@ class HtmlFile
 
   key :filename, String
   key :file_hash, String
+  key :description, String
   timestamps!
 
   self.ensure_index(:filename)

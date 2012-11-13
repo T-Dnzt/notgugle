@@ -8,6 +8,7 @@ module SearchingTools
 	  		@excluded_words = excluded_words
     		@word_weight = Hash.new(0)
     		@word_frequency = Hash.new(0)
+    		@file_changed = false
     		@db = Mongo::Connection.new.db('notgugle-development')
 	  	end
 
@@ -17,6 +18,7 @@ module SearchingTools
 					doc = Nokogiri::HTML(open(@file,"r"))
 					parse_page(doc)
 			  end
+			  clean_weight
 			  save_words
 			end
 
@@ -43,25 +45,37 @@ private
 
 		def save_words
 			 word_collection = @db.collection("keywords")
-		   @word_weight.each do |k, v|
-		     word_collection.update({ 'word' => "#{k}" }, {'$addToSet' => { 'pages' => { 'filename' => File.basename(@file), 'weight' => v, 'frequency' => @word_frequency[k] }}}, :upsert => true)
-		   end
+			 filename = File.basename(@file)
+		   @word_weight.each do |word, weight|
+		      id = word_collection.update({ 'word' => word }, {'$addToSet' => { 'pages' => { 'filename' => filename, 'weight' => weight, 'frequency' => @word_frequency[word] }}}, :upsert => true)
+		   	end
 		end
 
-		#Save or update a page in db. Check the md5 to see if anything changed
+		def clean_weight
+			 word_collection = @db.collection("keywords")
+			 @word_weight.each do |word, weight|
+			  if @file_changed && e_word = word_collection.find_one({ 'word' => word })
+			  	e_word["pages"] = e_word["pages"].reject { |h| h["filename"] == File.basename(@file) } 
+				  word_collection.save(e_word)
+				 end
+			 end
+		end
+
 		def save_page
 			filename = File.basename(@file)
-			pages_collection = @db.collection("pages")
+			files_collection = @db.collection("html_files")
     	file_hash = Digest::MD5.hexdigest(File.read(@file))
-	    if file = HtmlFile.find(filename: filename)
-	      if file_hash == file.file_hash
-	      	nil
-	      else
-	      	pages_collection.update({'filename' => filename }, { 'file_hash' => file_hash})
+
+	    if file = files_collection.find_one({'filename' => filename})
+	    	if file_hash == file["file_hash"]
+	    		nil
+	    	else
+	      	files_collection.update({'filename' => filename }, { 'file_hash' => file_hash})
+	    		@file_changed = true
 	      	true
-	      end
+	    	end
 	    else
-	    	pages_collection.insert({ 'filename' => filename, 'file_hash' => file_hash })
+	    	files_collection.insert({ 'filename' => filename, 'file_hash' => file_hash })
 	    	true
 	    end
 		end

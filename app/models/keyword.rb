@@ -11,6 +11,8 @@ end
 class Page
   include MongoMapper::EmbeddedDocument
 
+  embedded_in :keyword
+
   key :filename, String
   key :weight, Float
   key :frequency, Integer
