@@ -18,9 +18,9 @@ module SearchingTools
 				if save_file
 					doc = Nokogiri::HTML(open(@file,"r"))
 					parse_page(doc)
+					flush_page
+			    save_words
 			  end
-			  flush_page
-			  save_words
 			end
 
 			def display_variables
@@ -47,8 +47,8 @@ private
 		def parse_node(node_text, weight)
 		  node_text.gsub(/[^[:alpha:]]/, " ").downcase.split.each do |word|		  	
 		  	if word.length > 1 && !@excluded_words.include?(word)
-          @word_weight[word] += weight
-          @word_frequency[word] += 1
+	          @word_weight[word] += weight
+	          @word_frequency[word] += 1
         end
 		  end
 		end
@@ -57,18 +57,20 @@ private
 			 word_collection = @db.collection("keywords")
 			 filename = File.basename(@file)
 		   @word_weight.each do |word, weight|
-		      word_collection.update({ 'word' => word }, {'$addToSet' => { 'pages' => { 'filename' => filename, 'weight' => weight, 'frequency' => @word_frequency[word] }}}, :upsert => true)
+		      	word_collection.update({ 'word' => word }, {'$addToSet' => { 'pages' => { 'filename' => filename, 'weight' => weight, 'frequency' => @word_frequency[word] }}}, :upsert => true)
 		   	end
 		end
 
 		def flush_page
 			 word_collection = @db.collection("keywords")
+
 			 @word_weight.each do |word, weight|
-			  if @file_changed && e_word = word_collection.find_one({ 'word' => word })
-			  	e_word["pages"] = e_word["pages"].reject { |h| h["filename"] == File.basename(@file) } 
-				  word_collection.save(e_word)
-				 end
-			 end
+				 	e_wordz = word_collection.find_one({ 'word' => word })
+				  if @file_changed && e_word = word_collection.find_one({ 'word' => word })
+				  	e_word["pages"].delete_if { |h| h["filename"] == File.basename(@file) } 
+					  word_collection.save(e_word)
+					end
+				end
 		end
 
 		def save_file
@@ -80,7 +82,7 @@ private
 	    	if file_hash == file["file_hash"]
 	    		nil
 	    	else
-	      	files_collection.update({'filename' => filename }, { 'file_hash' => file_hash})
+	      	files_collection.update({'filename' => filename }, { 'filename' => filename, 'file_hash' => file_hash})
 	    		@file_changed = true
 	      	true
 	    	end
