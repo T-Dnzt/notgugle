@@ -1,6 +1,14 @@
 - provide(:title, 'Home')
 .center.hero-unit
-  %img{ :title => "notGugle", :src => "assets/logo.png", :border => "0", :alt => "logo" }
+  %img{ :title => "notGugle", :src => "assets/logo.png", :border => "0", :alt => "logo", :class => "logo"  }
+  :javascript
+    $(function() {
+      $('#search').val("#{params[:search]}");
+      $("input:text:visible:first").focus();
+      $('#searchbox input').bind('keypress', function(e) {
+            $('.logo').slideUp("slow");
+      });
+    });
   = form_tag(root_path, :id => "searchbox") do
     = text_field_tag "search", "", :placeholder => "Type here", :id => "search"
     = submit_tag("Search", :id => "submit")
@@ -9,6 +17,7 @@
       :javascript
         $(function() {
           $('#search').val("#{params[:search]}");
+          $('.logo').hide();
         });
       %small= "#{@results['pages'].count} #{pluralize_stats(@results["pages"].count)} en #{(@results['timer'] - 0.0005).round(3)} s"
       #list_results

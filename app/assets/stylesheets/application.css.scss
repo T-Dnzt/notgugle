@@ -27,7 +27,7 @@
   width: 500px;
   height: 35px;
   padding: 10px;
-  margin: 20px auto 50px;
+  margin: 5px auto 10px;
   overflow: hidden; /* Clear floats */
 }
 
@@ -207,7 +207,10 @@ small {
 }
 
 
-#list_results { color:black; }
+#list_results {
+  padding-top:85px;
+  color:black;
+}
 #list_results ol { font-size:16px; list-style-type: none; text-align: left; }
 #list_results ol li { font-weight: bold}
 #list_results ol li ol {
@@ -215,4 +218,5 @@ small {
   font-size:11px;
   font-weight: small;
 }
+#list-results p { font-size: 10px; font-weight: none; }
 #list_results ol li ol li { color:grey; margin-left:10px; font-weight: small;}
