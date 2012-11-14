@@ -7,8 +7,8 @@ module SearchingTools
     			Rails.logger.info "Searching..."
           t1 = Time.now
 
-          db = DataAccess::DbAccess.new('notgugle-development')
           hashes = DataAccess::HashAccess.new
+          db = DataAccess::DbAccess.new(hashes.database_name)    
 
           search_service = SearchService.new(searched_str, db, hashes)
           results = search_service.run

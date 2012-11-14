@@ -6,6 +6,14 @@ module SearchingTools
           #load files in hashes
         end
 
+        def database_name
+          'notgugle-development'
+        end
+
+        def path_to_files
+          Rails.root.join('public/html')
+        end
+
         def tags_weights
           {
               "p" => 1,

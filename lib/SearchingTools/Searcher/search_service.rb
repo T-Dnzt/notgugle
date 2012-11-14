@@ -18,9 +18,7 @@ private
         results = Hash.new(0)
         results["pages"] = Hash.new(0)
         results["desc_pages"] = Hash.new(0)
-
         results["pages"] = sum_weight(get_result_pages(pages, "filename"))
-
         results["pages"].sort! {|a, b| b["weight"] <=> a["weight"] }
 
         results["pages"].each do |f|

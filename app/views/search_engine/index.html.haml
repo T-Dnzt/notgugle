@@ -10,7 +10,7 @@
         $(function() {
           $('#search').val("#{params[:search]}");
         });
-      %small= "#{@results['pages'].count} #{pluralize_stats(@results["pages"].count)} en #{@results['timer']} s"
+      %small= "#{@results['pages'].count} #{pluralize_stats(@results["pages"].count)} en #{(@results['timer'] - 0.0005).round(3)} s"
       #list_results
         %ol
           - @results["pages"].each do |result|

@@ -4,6 +4,6 @@ class SearchEngineController < ApplicationController
 	end
 
 	def indexer
-		@indexing_state = (SearchingTools::Indexer::Indexer.run) ? "Ok" : "Non"
+		@timer = SearchingTools::Indexer::Indexer.run
 	end
 end

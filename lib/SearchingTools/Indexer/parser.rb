@@ -54,7 +54,7 @@ private
 		end
 
 		def save_words
-		   @word_weighttai.each do |word, weight|
+		   @word_weight.each do |word, weight|
 		   	  @db.update_or_create_word(word, @filename, weight, @word_frequency[word])
 		   	end
 		end
