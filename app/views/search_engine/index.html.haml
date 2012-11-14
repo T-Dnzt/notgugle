@@ -1,24 +1,17 @@
 - provide(:title, 'Home')
 .center.hero-unit
-  %img{ :title => "notGugle", :src => "assets/logo.png", :border => "0", :alt => "logo", :class => "logo"  }
+  - unless @results
+    %img{ :title => "notGugle", :src => "assets/logo.png", :border => "0", :alt => "logo", :class => "logo"  }
   :javascript
     $(function() {
       $('#search').val("#{params[:search]}");
       $("input:text:visible:first").focus();
-      $('#searchbox input').bind('keypress', function(e) {
-            $('.logo').slideUp("slow");
-      });
     });
   = form_tag(root_path, :id => "searchbox") do
     = text_field_tag "search", "", :placeholder => "Type here", :id => "search"
     = submit_tag("Search", :id => "submit")
-  - if !(@results.nil?)
+  - if @results
     - if @results.length > 0
-      :javascript
-        $(function() {
-          $('#search').val("#{params[:search]}");
-          $('.logo').hide();
-        });
       %small= "#{@results['pages'].count} #{pluralize_stats(@results["pages"].count)} en #{(@results['timer'] - 0.0005).round(3)} s"
       #list_results
         %ol
@@ -32,10 +25,10 @@
                 %li
                   = @results["desc_pages"].has_key?(result['filename']) ? @results["desc_pages"][result['filename']] : "no description"
                 = "Correspondances dans cette page : #{result["words"].join(', ')}"
+              %br/
+              %br/
       - else
         #list_results
           %p No result found.
           :javascript
-          $(function() {
-            $('#search').val("#{params[:search]}");
-          });
+         

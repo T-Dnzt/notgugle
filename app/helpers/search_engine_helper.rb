@@ -8,7 +8,7 @@ module SearchEngineHelper
   end
 
   def pluralize_stats(count)
-    found_pages = (count > 1) ? "pages trouvées" : "page trouvé"
+    found_pages = (count > 1) ? "pages trouvées" : "page trouvée"
     found_pages
   end
 
