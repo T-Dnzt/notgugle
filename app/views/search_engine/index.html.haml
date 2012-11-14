@@ -17,3 +17,4 @@
             %ol
               %li
                 = @desc_pages.has_key?(result['filename']) ? @desc_pages[result['filename']] : "no description"
+              = "Correspondances dans cette page : #{result["words"].join(', ')}"

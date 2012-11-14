@@ -12,14 +12,21 @@ module SearchingTools
         db = Mongo::Connection.new.db('notgugle-development')
         words_collection = db.collection("keywords")
 
+        pages = []
   			searched_arr.each do |word|
   			  matches = words_collection.find({'word' => /#{word}/i}).to_a
 
-          pages = []
-          matches.each {|match| match["pages"].each { |p| pages << p } }
-          result_pages = sum_weight(get_result_pages(pages, "filename"))
+          matches.each do |match| 
+            page_words = matches.collect { |m| m["word"] }
+            match["pages"].each do |p| 
+              p["words"] = find_matches_per_page(p, matches)
+              pages << p 
+            end
+          end
   			end
 
+        result_pages = sum_weight(get_result_pages(pages, "filename"))
+        result_pages.each { |page| page["words"] = page["words"].flatten(1).uniq }
         result_pages.sort! {|a, b| b["weight"] <=> a["weight"] }
         result_pages.each do |f|
           unless get_description("#{f['filename']}").nil?
@@ -29,6 +36,14 @@ module SearchingTools
 
   			return result_pages, desc_pages
   		end
+
+      def find_matches_per_page(page, matches)
+        page_words = []
+        matches.each do |match|
+          page_words << match["word"] if match["pages"].include?(page)
+        end
+        page_words
+      end
 
       def sum_weight(array)
         array.each do |hash|
