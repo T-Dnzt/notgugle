@@ -7,6 +7,9 @@ body { padding-top: 60px; }
   background: -moz-linear-gradient(top,  #ed1c24,  #aa1317);
   filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#ed1c24', endColorstr='#aa1317');
 }
+a { color:#d81b21; text-decoration:none;}
+a:hover { color:#ff2027; text-decoration: none;}
+ol li ol li a:link { color:red; text-decoration:none;}
 .navbar .nav > li > a { color: white; }
 .navbar .nav > li > a:hover { color: #808080; }
 @import "bootstrap-responsive";
