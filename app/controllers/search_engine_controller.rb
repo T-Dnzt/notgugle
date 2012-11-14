@@ -1,6 +1,8 @@
 class SearchEngineController < ApplicationController
 	def index
-		@results,@desc_pages = SearchingTools::Searcher::Searcher.run(params[:search]) if params[:search]
+    if params[:search]
+		  @results = SearchingTools::Searcher::Searcher.run(params[:search]) 
+    end
 	end
 
 	def indexer

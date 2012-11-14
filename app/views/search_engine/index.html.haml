@@ -10,10 +10,10 @@
         $(function() {
           $('#search').val("#{params[:search]}");
         });
-      %small Number of results : #{@results.count} results
+      %small= "#{@results['pages'].count} #{pluralize_stats(@results["pages"].count)} en #{@results['timer']} s"
       #list_results
         %ol
-          - @results.each do |result|
+          - @results["pages"].each do |result|
             %li
               = link_to get_title("#{Rails.root.join('public')}/html/#{result['filename']}"), "html/#{result['filename']}"
               \(
@@ -21,7 +21,7 @@
               \- poids #{(result['weight'] - 0.0005).round(1)})
               %ol
                 %li
-                  = @desc_pages.has_key?(result['filename']) ? @desc_pages[result['filename']] : "no description"
+                  = @results["desc_pages"].has_key?(result['filename']) ? @results["desc_pages"][result['filename']] : "no description"
                 = "Correspondances dans cette page : #{result["words"].join(', ')}"
       - else
         #list_results

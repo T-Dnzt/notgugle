@@ -15,20 +15,21 @@ module SearchingTools
 private
 
       def get_results(pages)
-        result_pages = Hash.new(0)
-        desc_pages = Hash.new(0)
+        results = Hash.new(0)
+        results["pages"] = Hash.new(0)
+        results["desc_pages"] = Hash.new(0)
 
-        result_pages = sum_weight(get_result_pages(pages, "filename"))
+        results["pages"] = sum_weight(get_result_pages(pages, "filename"))
 
-        result_pages.sort! {|a, b| b["weight"] <=> a["weight"] }
+        results["pages"].sort! {|a, b| b["weight"] <=> a["weight"] }
 
-        result_pages.each do |f|
+        results["pages"].each do |f|
           f["words"] = f["words"].flatten(1).uniq
           unless get_description("#{f['filename']}").nil?
-            desc_pages[f['filename']] = get_description("#{f['filename']}")
+            results["desc_pages"][f['filename']] = get_description("#{f['filename']}")
           end
         end
-        return result_pages, desc_pages
+        results
       end
 
       def get_matching_pages
