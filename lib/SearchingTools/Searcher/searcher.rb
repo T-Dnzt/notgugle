@@ -49,6 +49,13 @@ module SearchingTools
         end
       end
 
+      def get_description(web_page)
+        meta_content = nil
+        doc = Nokogiri::HTML(open("#{Rails.root.join('public')}/html/#{web_page}","r"))
+        doc.xpath("//meta[@name='description']").each { |node| meta_content = node.attr('content') }
+        meta_content
+      end
+
   		def excluded_words
   			%w{le la les}
       end
