@@ -1,3 +1,6 @@
 - provide(:title, 'Indexer')
 .center.hero-unit
-  %h1 indexer page : TO DO
+  - if @indexing_state.eql? "Ok"
+    %h1= "Index state : #{@indexing_state}"
+  - else
+    %h1 Indexing failed...

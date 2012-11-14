@@ -4,6 +4,6 @@ class SearchEngineController < ApplicationController
 	end
 
 	def indexer
-		SearchingTools::Indexer::Indexer.run
+		@indexing_state = (SearchingTools::Indexer::Indexer.run) ? "Ok" : "Non"
 	end
 end
