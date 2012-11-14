@@ -34,6 +34,10 @@ module SearchingTools
           %w{le la les je tu il elle nous vous elles ils leur leurs la mes ma mon mais ou est donc or ni car ni si un une des a b c d e f g h i j k l m n o p q r s t u v w x y z }
         end
 
+        def excluded_words_search
+        %w{le la les je tu il elle nous vous elles ils leur leurs la mes ma mon mais ou est donc or ni car ni si un une des a b c d e f g h i j k l m n o p q r s t u v w x y z }
+      end
+
     end
   end
 end

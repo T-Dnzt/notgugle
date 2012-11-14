@@ -7,6 +7,7 @@ module SearchingTools
           t1 = Time.now
           db = DataAccess::DbAccess.new('notgugle-development')
           hashes = DataAccess::HashAccess.new
+          
           Dir.glob("#{path_to_files}/*.html") do |file|
             parser = Parser.new(file, db, hashes)
             parser.run
