@@ -27,7 +27,6 @@ private
             results["desc_pages"][f['filename']] = get_description("#{f['filename']}")
           end
         end
-        Rails.logger.debug "#{page['frequency']}"
         results
       end
 
