@@ -1,34 +1,47 @@
-- provide(:title, 'Home')
+- provide(:title, 'Accueil')
 .center.hero-unit
-  - unless @results
-    %img{ :title => "notGugle", :src => "assets/logo.png", :border => "0", :alt => "logo", :class => "logo"  }
+  %img{ :title => "notGugle", :src => "assets/logo.png", :border => "0", :alt => "logo", :class => "logo"  }
+  #elapsed_time
   :javascript
     $(function() {
-      $('#search').val("#{params[:search]}");
-      $("input:text:visible:first").focus();
+      $("#search").focus();
+      $('.navbar-search').hide();
     });
   = form_tag(root_path, :id => "searchbox") do
-    = text_field_tag "search", "", :placeholder => "Type here", :id => "search"
+    = text_field_tag "search", "", :placeholder => "Rechercher", :id => "search"
     = submit_tag("Search", :id => "submit")
-  - if @results
+  - if !(@results.nil?)
     - if @results.length > 0
-      %small= "#{@results['pages'].count} #{pluralize_stats(@results["pages"].count)} en #{(@results['timer'] - 0.0005).round(3)} s"
-      #list_results
-        %ol
-          - @results["pages"].each do |result|
-            %li
-              = link_to get_title("#{Rails.root.join('public')}/html/#{result['filename']}"), "html/#{result['filename']}"
-              \(
-              = link_to result['filename'], "html/#{result['filename']}"
-              \- poids #{(result['weight'] - 0.0005).round(1)})
-              %ol
-                %li
-                  = @results["desc_pages"].has_key?(result['filename']) ? @results["desc_pages"][result['filename']] : "no description"
-                = "Correspondances dans cette page : #{result["words"].join(', ')}"
-              %br/
-              %br/
-      - else
+      :javascript
+        $(function() {
+          $('#searchbar').val("#{params[:search]}");
+          $('.navbar-search').show();
+          $('.logo').remove();
+          $('#searchbox').remove();
+          $('#elapsed_time').append("#{@results['pages'].count} #{pluralize_stats(@results["pages"].count)} en #{(@results['timer'] - 0.0005).round(3)} sec.")
+        });
+      #main_result
+        %h3{:style=>'text-align: left'} Résultats :
+        %hr
         #list_results
-          %p No result found.
-          :javascript
-         
+          %ol
+            - @results["pages"].each do |result|
+              %li
+                #title_page
+                  = link_to get_title("#{Rails.root.join('public')}/html/#{result['filename']}"), "html/#{result['filename']}"
+                  \[
+                  = link_to result['filename'], "html/#{result['filename']}"
+                  \- poids #{(result['weight'] - 0.0005).round(1)}]
+                %ol
+                  #description_page
+                    = @results["desc_pages"].has_key?(result['filename']) ? @results["desc_pages"][result['filename']] : "Pas de description pour cette page."
+                  #keywords_page
+                    = "Correspondances dans cette page : #{result["words"].join(', ')}"
+              %br/
+        - else
+          #list_results
+            %p No result found.
+            :javascript
+            $(function() {
+              $('#search').val("#{params[:search]}");
+            });
