@@ -1,5 +1,7 @@
 @import "bootstrap";
-body { padding-top: 60px; }
+
+body { padding-top: 30px; }
+
 .navbar-inner {
   color: #faddde;
   background: #d81b21;
@@ -7,6 +9,47 @@ body { padding-top: 60px; }
   background: -moz-linear-gradient(top,  #ed1c24,  #aa1317);
   filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#ed1c24', endColorstr='#aa1317');
 }
+.hero-unit { background-color: white; }
+
+.navbar-search {
+  padding-right: 45px;
+  margin-top: 6px;
+}
+
+.navbar-search .search-query {
+  height: 28;
+  background-color: white;
+  color: black;
+}
+.navbar-search ::-webkit-input-placeholder {
+  padding-top: 3px;
+}
+.navbar-search .search-query:focus
+{
+  background-color: white;
+  border-color: grey;
+}
+
+.navbar-search input[type="text"]:hover
+{
+  background-color:white;
+  color:black;
+}
+
+.navbar .divider-vertical {
+  background-color: #AA1317;
+  border-right: 0.5px solid #AA1317;
+}
+
+::-webkit-input-placeholder {
+  font-size: 13px;
+  line-height: 1;
+}
+
+:-moz-placeholder {
+  font-size: 13px;
+}
+
 a { color:#d81b21; text-decoration:none;}
 a:hover { color:#ff2027; text-decoration: none;}
 ol li ol li a:link { color:red; text-decoration:none;}
