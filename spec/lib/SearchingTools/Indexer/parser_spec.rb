@@ -10,7 +10,7 @@ describe SearchingTools::Indexer::Parser do
     source_file = Rails.root.join('public/html/test.html')
     system "cp #{source_file} #{rspec_test}"
 
-    @db = SearchingTools::DataAccess::DbAccess.new("notgugle-test") 
+    @db = SearchingTools::DataAccess::DbAccess.new("notgugle-test")
     @parser = SearchingTools::Indexer::Parser.new(rspec_test, @db, hashes )
   end
 
@@ -21,7 +21,7 @@ describe SearchingTools::Indexer::Parser do
 
 
   describe "Indexing" do
-    it "should add test.html words in db" do 
+    it "should add test.html words in db" do
       @parser.run
       @db.keywords.count.should > 0
     end

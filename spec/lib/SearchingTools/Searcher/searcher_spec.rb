@@ -10,7 +10,7 @@ describe SearchingTools::Indexer::Parser do
     source_file = Rails.root.join('public/html/test.html')
     system "cp #{source_file} #{rspec_test}"
 
-    @db = SearchingTools::DataAccess::DbAccess.new("notgugle-test") 
+    @db = SearchingTools::DataAccess::DbAccess.new("notgugle-test")
     @parser = SearchingTools::Indexer::Parser.new(rspec_test, @db, hashes )
   end
 
@@ -21,7 +21,7 @@ describe SearchingTools::Indexer::Parser do
 
 
   describe "Search" do
-    it "should return results" do 
+    it "should return results" do
       @parser.run
       results = SearchingTools::Searcher::Searcher.run(@db.keywords.find.to_a.first["word"])
       results.should_not eq(nil)
@@ -29,7 +29,7 @@ describe SearchingTools::Indexer::Parser do
       results["pages"].each do |page|
         page["filename"].should_not be_nil
         page["weight"].should > 0
-        page["frequency"].count.should > 0
+        page["frequency"].should > 0
         page["words"].count.should > 0
       end
     end
