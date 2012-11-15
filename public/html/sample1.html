@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html>
+    <head>
+		<title>Recettes de cuisine de luxe</title>
+		<meta name="description" content="Cuisine et recettes de luxe">
+		<meta charset=UTF-8">
+		<style type="text/css">
+		/* Design CSS de la page */
+		body
+		{
+			background: rgba(200,200,200,0.8);
+			font-family: 'Trebuchet MS', Arial, sans-serif;
+			color: #181818;
+		}
+
+		#bloc_page
+		{
+			width: 900px;
+			margin: auto;
+		}
+
+		section h1, footer h1, nav a
+		{
+			font-family: Dayrom, serif;
+			font-weight: normal;
+			text-transform: uppercase;
+		}
+		
+		header
+		{
+			background: url('imgs/separateur.png') repeat-x bottom;
+		}
+
+		#titre_principal
+		{
+			display: inline-block;
+		}
+
+		header h1
+		{
+			font-family: 'BallparkWeiner', serif;
+			font-size: 2.5em;
+			font-weight: normal;
+		}
+
+		#header h1
+		{
+			display: inline-block;
+			margin-bottom: 0px;
+		}
+
+		header h2
+		{
+			font-family: Dayrom, serif;
+			font-size: 1.1em;
+			margin-top: 0px;
+			font-weight: normal;
+		}
+		
+		nav
+		{
+			display: inline-block;
+			width: 740px;
+			text-align: right;
+		}
+
+		nav ul
+		{
+			list-style-type: none;
+		}
+
+		nav li
+		{
+			display: inline-block;
+			margin-right: 15px;
+		}
+
+		nav a
+		{
+			font-size: 1.3em;
+			color: #181818;
+			padding-bottom: 3px;
+			text-decoration: none;
+		}
+
+		nav a:hover
+		{
+			color: #760001;
+			border-bottom: 3px solid #760001;
+		}
+		
+		#banniere_image
+		{
+			margin-top: 15px;
+			height: 200px;
+			border-radius: 5px;
+			background: url('imgs/filet_de_boeuf.jpg') no-repeat;
+			position: relative;
+			box-shadow: 0px 4px 4px #1c1a19;
+			margin-bottom: 25px;
+		}
+
+		#banniere_description
+		{
+			position: absolute;
+			bottom: 0;
+			border-radius: 0px 0px 5px 5px;
+			width: 99.5%;
+			height: 33px;
+			padding-top: 15px;
+			padding-left: 4px;
+			background-color: rgb(24,24,24); /* Pour les anciens navigateurs */
+			background-color: rgba(24,24,24,0.8);
+			color: white;
+			font-size: 0.8em;
+		}
+		
+		#banniere_description h2
+		{
+			margin-top: 0px;
+			margin-left: 5px;
+		}
+
+		.bouton_rouge
+		{
+			display: inline-block;
+			height: 25px;
+			position: absolute;
+			right: 5px;
+			bottom: 5px;
+			background: url('imgs/fond_degraderouge.png') repeat-x;
+			border: 1px solid #760001;
+			border-radius: 5px;
+			font-size: 1.2em;
+			text-align: center;
+			padding: 3px 8px 0px 8px;
+			color: white;
+			text-decoration: none;
+		}
+
+		.bouton_rouge img
+		{
+			border: 0;
+		}
+
+		article, aside
+		{
+			display: inline-block;
+			vertical-align: top;
+			text-align: justify;
+		}
+
+		article
+		{
+			width: 625px;
+			margin-right: 15px;
+		}
+
+		.ico_categorie
+		{
+			vertical-align: middle;
+			margin-right: 8px;
+			width: 42px;
+		}
+
+		article p
+		{
+			font-size: 0.8em;
+		}
+
+		aside
+		{
+			position: relative;
+			width: 235px;
+			background-color: rgba(94, 94, 94, 0.6);
+			box-shadow: 0px 2px 5px #1c1a19;
+			border-radius: 5px;
+			padding: 10px;
+			color: white;
+			font-size: 0.9em;
+			margin-bottom: 20px;
+		}
+
+		#photo_plat_du_jour
+		{
+			text-align: center;
+		}
+
+		#photo_plat_du_jour img
+		{
+			border: 1px solid #181818;
+			width: 192px;
+		}
+
+		aside img
+		{
+			margin-right: 5px;
+		}
+		
+		footer
+		{
+			background:  url('imgs/separateur.png') repeat-x top, url('imgs/ombre.png') repeat-x top;
+			padding-top: 25px;
+		}
+
+		footer p, footer ul
+		{
+			font-size: 0.8em;
+		}
+
+		footer h1
+		{
+			font-size: 1.1em;
+		}
+		
+		#tweet
+		{
+			width: 28%;
+			display: inline-block;
+			vertical-align: top;
+		}
+
+		#tweet img
+		{
+			-webkit-transform: rotate(-1deg); -moz-transform: rotate(1deg);
+			-webkit-box-shadow: 0 3px 10px #666; -moz-box-shadow: 0 3px 10px #666;
+			width: 96px;
+		}
+
+		#partenaires
+		{
+			width: 31%;
+			display: inline-block;
+			vertical-align: top;
+		}
+
+		#partenaires ul
+		{
+			display: inline-block;
+			vertical-align: top;
+			margin-top: 0;
+			width: 48%;
+			list-style-image: url('imgs/ico_liensexterne.png');
+			padding-left: 2px;
+		}
+
+		#partenaires a
+		{
+			text-decoration: none;
+			color: #760001;
+		}
+		</style>
+    </head>
+
+    <body>
+        <div id="bloc_page">
+            <header>
+                <div id="titre_principal">
+                    <h1>Recettes de Cuisine</h1>
+                    <h2>Recettes et gourmandises</h2>
+                </div>
+                
+                <nav>
+                    <ul>
+                        <li><a href="#">Accueil</a></li>
+                        <li><a href="#">Recettes</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </nav>
+            </header>
+            
+            <div id="banniere_image">
+                <div id="banniere_description">
+                    <h2>Le luxe culinaire avec Roger:</h2> 
+                    <a href="#" class="bouton_rouge">Voir les recettes</a>
+                </div>
+            </div>
+            
+            <section>
+                <article>
+                    <h1><img src="imgs/chef.png" alt="Categorie experience culinaire" class="ico_categorie" />Les nouveaut&eacute;s</h1>
+                    <p>Je mangeais un magret de canard &agrave; l'orange, quand tout &agrave; coup, un lapin sauta dans mon assiette et rongea le cou du canard...
+                    Cet instant fut incroyable...Cependant je ne manqua pas cette occasion pour cuisiner le lapin.
+                    Vous pouvez suivre la recette que j'ai appliqu&eacute; pour cuisiner ce lapin via le liens suivant: <a href="#">Lapin au vin blanc</a></p>
+					<p> On se dit que finalement cette fin d ann&eacute;e sera des plus festives, propice aux retrouvailles familiales!
+					Le moment est donc parfait pour commencer &agrave; se pencher sur vos menus de fetes et de s essayer &agrave; la cuisine sophistiqu&eacute;e. 
+					Entrainez-vous &agrave; cuisiner avec notre recette de <a href="#">Velout&eacute; aux chataignes</a> et bien d'autre... 
+					Pour cela rendez-vous sur notre page <a href="#">plats d'hiver</a></p>
+					<p>Vous avez un repas de famille de pr&eacute;vu ? Des amis d&eacute;barquent &agrave; l improviste ? Pas de probl&egrave;me ! Faites-leur donc plaisir 
+					avec de sublimes mets et accompagnez-les de vins d exception ! Succ&egrave;s garanti ! Rendez &agrave; la rubrique <a href="#">Filet de boeuf ratatouille</a></p>
+					<p>Comme un(e) pro, vous voil&agrave en train de concurrencer les meilleurs. 
+					Voici les meilleures recettes pour vous simplifier la vie (et surtout l esprit !). 
+					Ainsi, vous &eacute;paterez tout le monde et surtout vous-vous-r&eacute;-ga-le-rez !</p>
+					<p><strong>Frappez fort avec le caf&eacute; gourmand !</strong><br>
+					L essayer, c est l adopter... Souvent servi &agrave; la place du dessert, le caf&eacute;
+					gourmand permet de proposer &agrave; vos invit&eacute;s une multitude de mignardises toutes plus gourmandes les unes que les autres. Nul n y r&eacute;sistera!</p>
+                </article>
+				<aside>
+                    <h1>Plat du jour</h1>
+                    <p id="photo_plat_du_jour"><img src="imgs/porc_bacon.jpg" alt="Photo de porc avec bacon" /></p>
+                    <h3>Porc au caramel tapiss&eacute; par des feuilles de bacon</h3>
+                    <p>1. D&eacute;sosser les &eacute;chines et les couper en d&eacute;s d'1 cm environ. emincer finement l'oignon et l'ail. <br><br>
+					2. Dans une cocotte, faites revenir le porc dans un fond d'huile  avec l'ail et l'oignon. Ajouter un peu de sel...<br><br>
+					<a href="#">Afficher la suite</a>
+                    <p><img src="imgs/facebook.png" alt="Facebook" /><img src="imgs/twitter.png" alt="Twitter" /><img src="imgs/rss.png" alt="RSS" /></p>
+				</aside>
+            </section>
+            
+            <footer>
+                <div id="tweet">
+                    <h1>Les derniers tweets</h1>
+                    <p>Le clafoutis aux cerises.</p><img src="imgs/clafoutis.jpg" alt="clafoutis aux cerises" contenteditable="false" />
+                    <p>le 16 novembre &agrave; 7h36</p>
+                </div>
+                <div id="partenaires">
+                    <h1>Partenaires</h1>
+                    <ul>
+                        <li><a href="#">bdiscount</a></li>
+                        <li><a href="http://foodbyphone.com/" rel="nofollow">Food by phone</a></li>
+                        <li><a href="#">iCook</a></li>
+                    </ul>
+                </div>
+            </footer>
+        </div>
+    </body>
+</html>
