@@ -1,10 +1,12 @@
 require File.expand_path(File.dirname(__FILE__) + '../../../../spec_helper')
-require Rails.root.join('lib/SearchingTools/DataAccess/db_access')
+Dir[Rails.root + 'lib/**/*.rb'].each {|lib| require lib }
 
 describe SearchingTools::DataAccess::DbAccess do
 
   before :each do
     @db = SearchingTools::DataAccess::DbAccess.new("notgugle-test")
+    @db.keywords.remove()
+    @db.html_files.remove()
   end
 
   describe "database access" do
@@ -37,13 +39,11 @@ describe SearchingTools::DataAccess::DbAccess do
     end
 
     it "should return a word" do
-      @db.keywords.remove()
       @db.update_or_create_word("Test", "test.html", "1", "1")
       @db.find_word("Test").should_not eq(nil)
     end
 
     it "should return a html file" do
-      @db.html_files.remove()
       @db.create_html_file("test.html", "HASH")
       @db.find_html_file("test.html").should_not eq(nil)
     end
