@@ -7,10 +7,10 @@
           = form_tag(root_path, :class => "navbar-search") do
             %div{:style => "position: relative;"}
               %i.icon-search{:style => "position: absolute; left: 10px; top: 7px;"}
-              %input.search-query{:name => "search", :autocomplete => "off", :lang => "en", :placeholder => "Search", :spellcheck => "false", :id => "searchbar", :style => "padding-left: 28px; line-height: 19px;", :type => "text", "x-webkit-grammar" => "builtin:search", "x-webkit-speech" => ""}
+              %input.search-query{:name => "search", :autocomplete => "off", :lang => "en", :placeholder => "Rechercher", :spellcheck => "false", :id => "searchbar", :style => "padding-left: 28px; line-height: 19px;", :type => "text", "x-webkit-grammar" => "builtin:search", "x-webkit-speech" => ""}
           %li{ :class => "divider-vertical"}
-          %li= link_to "Home",    root_path
+          %li= link_to "Accueil",    root_path
           %li{ :class => "divider-vertical"}
           %li= link_to "Indexer",    indexer_path
           %li{ :class => "divider-vertical"}
-          %li= link_to "Help", help_path
+          %li= link_to "Aide", help_path

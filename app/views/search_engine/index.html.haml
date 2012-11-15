@@ -1,4 +1,4 @@
-- provide(:title, 'Home')
+- provide(:title, 'Accueil')
 .center.hero-unit
   %img{ :title => "notGugle", :src => "assets/logo.png", :border => "0", :alt => "logo", :class => "logo"  }
   #elapsed_time
@@ -8,7 +8,7 @@
       $('.navbar-search').hide();
     });
   = form_tag(root_path, :id => "searchbox") do
-    = text_field_tag "search", "", :placeholder => "Type here", :id => "search"
+    = text_field_tag "search", "", :placeholder => "Rechercher", :id => "search"
     = submit_tag("Search", :id => "submit")
   - if !(@results.nil?)
     - if @results.length > 0
@@ -21,7 +21,7 @@
           $('#elapsed_time').append("#{@results['pages'].count} #{pluralize_stats(@results["pages"].count)} en #{(@results['timer'] - 0.0005).round(3)} sec.")
         });
       #main_result
-        %h3{:style=>'text-align: left'} Recherches :
+        %h3{:style=>'text-align: left'} Résultats :
         %hr
         #list_results
           %ol
@@ -34,9 +34,10 @@
                   \- poids #{(result['weight'] - 0.0005).round(1)}]
                 %ol
                   #description_page
-                    = @results["desc_pages"].has_key?(result['filename']) ? @results["desc_pages"][result['filename']] : "No description for this page."
+                    = @results["desc_pages"].has_key?(result['filename']) ? @results["desc_pages"][result['filename']] : "Pas de description pour cette page."
                   #keywords_page
                     = "Correspondances dans cette page : #{result["words"].join(', ')}"
+              %br/
         - else
           #list_results
             %p No result found.
