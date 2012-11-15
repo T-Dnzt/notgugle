@@ -27,6 +27,7 @@ private
             results["desc_pages"][f['filename']] = get_description("#{f['filename']}")
           end
         end
+        Rails.logger.debug "#{page['frequency']}"
         results
       end
 
@@ -35,10 +36,10 @@ private
         @search.each do |word|
           unless @hashes.excluded_words_search.include?(word)
             matches = @db.keywords.find({'word' => /#{word}/i}).to_a
-            matches.each do |match| 
-              match["pages"].each do |p| 
+            matches.each do |match|
+              match["pages"].each do |p|
                 p["words"] = find_matches_per_page(p, matches)
-                pages << p 
+                pages << p
               end
             end
           end
