@@ -1,3 +1,4 @@
+#This class parse the file and save the words in db
 module SearchingTools
   module Indexer
 	  class Parser
@@ -53,6 +54,7 @@ private
 		  end
 		end
 
+		#Save each words contained in word_weight
 		def save_words
 		  @word_weight.each do |word, weight|
 		   	@db.update_or_create_word(word, @filename, weight, @word_frequency[word])
@@ -63,6 +65,7 @@ private
 			@db.flush_page(@word_weight, @filename, @file_changed)
 		end
 
+		#Check if the file has been modified or not and parse it depending on the result
 		def save_file
 			file_hash = Digest::MD5.hexdigest(File.read(@file))
 			if file = @db.find_html_file(@filename)

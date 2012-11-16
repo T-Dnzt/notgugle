@@ -1,3 +1,4 @@
+#This class is used to access the mongodb database and retrieve specific values
 module SearchingTools
   module DataAccess
     class DbAccess
@@ -40,6 +41,7 @@ module SearchingTools
         keywords.update({ 'word' => word }, {'$addToSet' => { 'pages' => { 'filename' => filename, 'weight' => weight, 'frequency' => frequency }}}, :upsert => true)
       end
 
+      #Remove the file named 'filename' from every document in the database
       def flush_page(word_weight, filename, file_changed)
         word_weight.each do |word, weight|
           if file_changed && existing_word = find_word(word)

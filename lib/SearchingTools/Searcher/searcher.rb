@@ -1,3 +1,4 @@
+#This class start the search with the string parameter passed
 module SearchingTools
   module Searcher
     class Searcher

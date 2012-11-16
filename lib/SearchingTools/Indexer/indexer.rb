@@ -1,3 +1,4 @@
+#This class starts the parsing of each file in the defined path
 module SearchingTools
   module Indexer
 	  class Indexer

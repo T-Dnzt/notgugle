@@ -1,3 +1,4 @@
+#Use to get defined values. Should switch to use configuration files which would be loaded here.
 module SearchingTools
   module DataAccess
     class HashAccess

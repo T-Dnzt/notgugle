@@ -1,3 +1,4 @@
+#Search in the db with the 'search' paramter and build a Hash with results 
 module SearchingTools
   module Searcher
     class SearchService
