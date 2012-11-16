@@ -46,7 +46,7 @@ private
 		#Parse each tag to retrieve the word. Split everything which is not a letter or a space.
 		def parse_node(node_text, weight)
 		  node_text.gsub(/[^[:alpha:]]/, " ").downcase.split.each do |word|
-		  	if word.length > 1 && !@hashes.excluded_words_index.include?(word)
+		  	if !word.blank? && !@hashes.excluded_words_index.include?(word)
 	          @word_weight[word] += weight
 	          @word_frequency[word] += 1
         end
@@ -54,9 +54,9 @@ private
 		end
 
 		def save_words
-		   @word_weight.each do |word, weight|
-		   	  @db.update_or_create_word(word, @filename, weight, @word_frequency[word])
-		   	end
+		  @word_weight.each do |word, weight|
+		   	@db.update_or_create_word(word, @filename, weight, @word_frequency[word])
+		  end
 		end
 
 		def flush_page
