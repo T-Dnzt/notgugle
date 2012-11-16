@@ -29,9 +29,6 @@
               %li
                 #title_page
                   = link_to get_title("#{Rails.root.join('public')}/html/#{result['filename']}"), "html/#{result['filename']}"
-                  \[
-                  = link_to result['filename'], "html/#{result['filename']}"
-                  \- poids #{(result['weight'] - 0.0005).round(1)}]
                 %ol
                   #description_page
                     = @results["desc_pages"].has_key?(result['filename']) ? @results["desc_pages"][result['filename']] : "Pas de description pour cette page."
